@@ -2,7 +2,11 @@ function sendMessage() {
     let messageInput = document.getElementById('message-input');
     let message = messageInput.value;
     displayMessage('user', message)
-    
+
+    // Show loading spinner
+    let loadingSpinner = document.getElementById('loading-spinner');
+    loadingSpinner.style.display = 'flex';
+
     // Get the selected function from the dropdown menu
     let functionSelect = document.getElementById('function-select');
     let selectedFunction = functionSelect.value;
@@ -32,6 +36,7 @@ function sendMessage() {
             let response = JSON.parse(xhr.responseText);
             displayMessage('assistant', response.message);
         }
+        loadingSpinner.style.display = 'none';
     };
     xhr.send(JSON.stringify({message: message}));
     
@@ -77,6 +82,15 @@ function displayMessage(sender, message) {
     chatContainer.scrollTop = chatContainer.scrollHeight;
 }
 
+function clearChat() {
+    let chatContainer = document.getElementById('chat-container');
+    chatContainer.innerHTML = '';
+}
+
 // Handle button click event
 let sendButton = document.getElementById('send-btn');
 sendButton.addEventListener('click', sendMessage);
+
+// Handle button click event for clearing chat history
+let clearButton = document.getElementById('clear-btn');
+clearButton.addEventListener('click', clearChat);
